@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Risky, Sifty!</title>
+
+<script src="index_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="index_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="index_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="index_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="index_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="index_files/navigation-1.1/tabsets.js"></script>
+<link href="index_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="index_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="practical.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Risky, Sifty!</h1>
+<h4 class="author"><em><table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'>
+<col width='10%'>
+<col width='10%'>
+<tr style="border:none">
+<td style="display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none" nowrap>
+CDS Hackathon
+</td>
+<td style="width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none">
+<img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style='height:15px;width:80px'/>
+</td>
+</tr>
+</table></em></h4>
+
+</div>
+
+
+<p align="center">
+<img width="100%" src="image/minority.gif" margin=0><br> <font style="font-size:10px">from <a href="https://gifer.com/en/6Hql">gifer.com</a></font>
+</p>
+<div id="section" class="section level1 tabset">
+<h1></h1>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><em>Washington, D.C., Anno 2054.</em></p>
+<p>In an utopian, future world mankind has achieved a state of perfect orderliness. In this world, humans have become ideal decision makers, who always choose rationally in light of their preferences and the law. That is, almost all humans. A small resistance continues to disobey, by letting themselves be guided by situational greed and excitement, leading them to engage in ruthlessly risky behavior. To identify these troublemakers, the Secretary of Homeland Security funded a new task force headed by your friend, Tom Cruise.</p>
+<p>Knowing himself little about machine learning, Tom Cruise approached you to help him predict risk taking based on a short psychological assessment known as the Basel-Berlin Risk Assessment. This less than 24h assessment has been introduced by the classic Basel-Berlin Risk Study (<a href="http://advances.sciencemag.org/content/advances/3/10/e1701381.full.pdf"><strong>BBRS</strong></a>) conducted almost 30 years ago by Renato Frey and colleagues. Your task is to use the BBRS’s data to develop a model that predicts self-reported, yearly risk taking based on the 207 variables of this frugal measurement instrument.</p>
+<p>Specifically, your goal is to outperform Tom’s other friends by finding a model that has the lowest mean absolute error (MAE) in order to prove to him that you are worthy of his friendship. Follow the instructions under the <em>Instructions</em> tab.</p>
+<p>The competition ends in…</p>
+<font style="font-size:32px">
+<p id="demo" align="center">
+</p>
+<p></font></p>
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Mar 28, 2019 18:30:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get todays date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
+</div>
+<div id="instructions" class="section level2">
+<h2>Instructions</h2>
+<div id="preliminaries" class="section level3">
+<h3>Preliminaries</h3>
+<ol style="list-style-type: decimal">
+<li>Load the set of packages listed in the functions section above.</li>
+</ol>
+<pre class="r"><code>## NAME
+## DATE
+## Modeling competition
+
+library(tidyverse)
+library(caret)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Load the <code>bbrs</code> data set and change any character variables to factors.</li>
+</ol>
+<pre class="r"><code># Load bbrs data
+bbrs &lt;- read_csv(file = &quot;https://cdsbasel.github.io/hackathon_march/BBRS_train.csv&quot;)
+
+# change character to factor
+bbrs &lt;- bbrs %&gt;% mutate_if(is.character, as.factor)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>For guidance on how to go on see the code under the <em>Examples</em> tab.</li>
+</ol>
+</div>
+<div id="competition-rules" class="section level3">
+<h3>Competition rules</h3>
+<ol style="list-style-type: decimal">
+<li><p>The goal of the competition is to <strong>predict <code>Dy</code></strong> (self-reported risk taking within a year) with <strong>minimal <code>MAE</code></strong>.</p></li>
+<li><p>Entering the competition grants you a chance to win 🍾🍾🍾.</p></li>
+<li><p>To enter the competition, you must submit no more, no less than one caret <code>train</code>-object (result of the <code>train()</code> function) containing your candidate model. To submit the model, first save your model as an <code>.RDS</code>-file named <code>yourname_pseudonym_train.RDS</code>, with <code>yourname</code> replaced by your real name and <code>pseudonym</code> replaced by a pseudonym of your choice. See the code below.</p></li>
+</ol>
+<pre class="r"><code># save train obect as .RDS
+saveRDS(my_train,&#39;1_Data/myname_mypseudonym_train.RDS&#39;)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Submit your <code>.RDS</code> file (containing your training object) via this link: <a href="https://www.dropbox.com/request/QapEfuzEL4JM9bR62hXZ"><strong>Submit candidate</strong></a>.</p></li>
+<li><p>Use any weapon in your arsenal (or <code>caret</code>’s arsenal). Feel free to try different models (see <em>Models</em> tab), use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction <code>MAE</code>. For help take a look at the full <a href="https://therbootcamp.github.io/appliedML_2019Jan/">course materials</a>.</p></li>
+<li><p>In order to be able to evaluate the models refrain from any manipulation (engineering) of features other than those accessible via the <code>preProcess</code> argument in the <code>train()</code> function.</p></li>
+</ol>
+</div>
+</div>
+<div id="dataset" class="section level2">
+<h2>Dataset</h2>
+<div id="data-set" class="section level4">
+<h4>Data set</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="left">File</th>
+<th align="left">Rows</th>
+<th align="left">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><a href="%22https://cdsbasel.github.io/hackathon_march/BBRS_train.csv%22">bbrs_train</a></td>
+<td align="left">748</td>
+<td align="left">207</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="variable-descriptions" class="section level4">
+<h4>Variable descriptions</h4>
+</div>
+<div id="remove-ommitted-vars" class="section level4">
+<h4>REMOVE OMMITTED VARS</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BART</td>
+<td align="left">XXX in Balloon Analogue Risk Task</td>
+</tr>
+<tr class="even">
+<td align="left">BARTp</td>
+<td align="left">XXX in Balloon Analogue Risk Task</td>
+</tr>
+<tr class="odd">
+<td align="left">BARTpadj</td>
+<td align="left">XXX in Balloon Analogue Risk Task</td>
+</tr>
+<tr class="even">
+<td align="left">CCT</td>
+<td align="left">XXX in Columbia Card Task</td>
+</tr>
+<tr class="odd">
+<td align="left">CCTn</td>
+<td align="left">XXX in Columbia Card Task</td>
+</tr>
+<tr class="even">
+<td align="left">CCTnadj</td>
+<td align="left">XXX in Columbia Card Task</td>
+</tr>
+<tr class="odd">
+<td align="left">CCTr</td>
+<td align="left">XXX in Columbia Card Task</td>
+</tr>
+<tr class="even">
+<td align="left">CCTradj</td>
+<td align="left">XXX in Columbia Card Task</td>
+</tr>
+<tr class="odd">
+<td align="left">DFEss</td>
+<td align="left">Sample size in Decisions from Experience</td>
+</tr>
+<tr class="even">
+<td align="left">DFEr</td>
+<td align="left">XXX choices in Decisions from Experience</td>
+</tr>
+<tr class="odd">
+<td align="left">DFEre</td>
+<td align="left">XXX choices in Decisions from Experience</td>
+</tr>
+<tr class="even">
+<td align="left">DFD</td>
+<td align="left">XXX choices in Decisions from Description</td>
+</tr>
+<tr class="odd">
+<td align="left">DFDr</td>
+<td align="left">XXX choices in Decisions from Description</td>
+</tr>
+<tr class="even">
+<td align="left">LOT</td>
+<td align="left">XXX choices in adaptive lotteries</td>
+</tr>
+<tr class="odd">
+<td align="left">LOTr</td>
+<td align="left">XXX choices in adaptive lotteries</td>
+</tr>
+<tr class="even">
+<td align="left">LOTcv</td>
+<td align="left">XXX choices in adaptive lotteries</td>
+</tr>
+<tr class="odd">
+<td align="left">MPL</td>
+<td align="left">XXX in multiple price lists</td>
+</tr>
+<tr class="even">
+<td align="left">MPLr</td>
+<td align="left">XXX in multiple price lists</td>
+</tr>
+<tr class="odd">
+<td align="left">MT</td>
+<td align="left">XXX choices in Marbles task</td>
+</tr>
+<tr class="even">
+<td align="left">MTr</td>
+<td align="left">XXX choices in Marbles task</td>
+</tr>
+<tr class="odd">
+<td align="left">VRTTT</td>
+<td align="left">Reaction latency in Vienna Risk Taking Test Traffic</td>
+</tr>
+<tr class="even">
+<td align="left">GABS</td>
+<td align="left">Gambling Attitude and Belief Survey</td>
+</tr>
+<tr class="odd">
+<td align="left">SOEP</td>
+<td align="left">SOEP general risk taking item</td>
+</tr>
+<tr class="even">
+<td align="left">SOEPdri</td>
+<td align="left">SOEP driving item</td>
+</tr>
+<tr class="odd">
+<td align="left">SOEPfin</td>
+<td align="left">SOEP financial item</td>
+</tr>
+<tr class="even">
+<td align="left">SOEPrec</td>
+<td align="left">SOEP recreational item</td>
+</tr>
+<tr class="odd">
+<td align="left">SOEPocc</td>
+<td align="left">SOEP occupational item</td>
+</tr>
+<tr class="even">
+<td align="left">SOEPhea</td>
+<td align="left">SOEP health item</td>
+</tr>
+<tr class="odd">
+<td align="left">SOEPsoc</td>
+<td align="left">SOEP social item</td>
+</tr>
+<tr class="even">
+<td align="left">Deth</td>
+<td align="left">DOSPERT ethical scale, risk taking format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dinv</td>
+<td align="left">DOSPERT investment scale, risk taking format</td>
+</tr>
+<tr class="even">
+<td align="left">Dgam</td>
+<td align="left">DOSPERT gambling scale, risk taking format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dhea</td>
+<td align="left">DOSPERT health scale, risk taking format</td>
+</tr>
+<tr class="even">
+<td align="left">Drec</td>
+<td align="left">DOSPERT recreational scale, risk taking format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dsoc</td>
+<td align="left">DOSPERT social scale, risk taking format</td>
+</tr>
+<tr class="even">
+<td align="left">Deth_r</td>
+<td align="left">DOSPERT ethical scale, risk perception format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dinv_r</td>
+<td align="left">DOSPERT investment scale, risk perception format</td>
+</tr>
+<tr class="even">
+<td align="left">Dgam_r</td>
+<td align="left">DOSPERT gambling scale, risk perception format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dhea_r</td>
+<td align="left">DOSPERT health scale, risk perception format</td>
+</tr>
+<tr class="even">
+<td align="left">Drec_r</td>
+<td align="left">DOSPERT recreational scale, risk perception format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dsoc_r</td>
+<td align="left">DOSPERT social scale, risk perception format</td>
+</tr>
+<tr class="even">
+<td align="left">Deth_b</td>
+<td align="left">DOSPERT ethical scale, expected benefit format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dinv_b</td>
+<td align="left">DOSPERT investment scale, expected benefit format</td>
+</tr>
+<tr class="even">
+<td align="left">Dgam_b</td>
+<td align="left">DOSPERT gambling scale, expected benefit format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dhea_b</td>
+<td align="left">DOSPERT health scale, expected benefit format</td>
+</tr>
+<tr class="even">
+<td align="left">Drec_b</td>
+<td align="left">DOSPERT recreational scale, expected benefit format</td>
+</tr>
+<tr class="odd">
+<td align="left">Dsoc_b</td>
+<td align="left">DOSPERT social scale, expected benefit format</td>
+</tr>
+<tr class="even">
+<td align="left">PRI</td>
+<td align="left">Personal risk inventory</td>
+</tr>
+<tr class="odd">
+<td align="left">PRIw</td>
+<td align="left">XXX Personal risk inventory</td>
+</tr>
+<tr class="even">
+<td align="left">BIS1att</td>
+<td align="left">Barrat’s impulsvivity scale, XXX scale</td>
+</tr>
+<tr class="odd">
+<td align="left">BIS1mot</td>
+<td align="left">Barrat’s impulsvivity scale, XXX scale</td>
+</tr>
+<tr class="even">
+<td align="left">BIS1ctr</td>
+<td align="left">Barrat’s impulsvivity scale, XXX scale</td>
+</tr>
+<tr class="odd">
+<td align="left">BIS1com</td>
+<td align="left">Barrat’s impulsvivity scale, XXX scale</td>
+</tr>
+<tr class="even">
+<td align="left">BIS1per</td>
+<td align="left">Barrat’s impulsvivity scale, XXX scale</td>
+</tr>
+<tr class="odd">
+<td align="left">BIS1ins</td>
+<td align="left">Barrat’s impulsvivity scale, XXX scale</td>
+</tr>
+<tr class="even">
+<td align="left">BISa</td>
+<td align="left">Barrat’s impulsvivity scale, attentional scale</td>
+</tr>
+<tr class="odd">
+<td align="left">BISm</td>
+<td align="left">Barrat’s impulsvivity scale, motor scale</td>
+</tr>
+<tr class="even">
+<td align="left">BISn</td>
+<td align="left">Barrat’s impulsvivity scale, nonplanning-behavior scale</td>
+</tr>
+<tr class="odd">
+<td align="left">BIS</td>
+<td align="left">Barrat’s impulsvivity scale, total score</td>
+</tr>
+<tr class="even">
+<td align="left">SStas</td>
+<td align="left">Sensation seeking scale, thrill and adventure seeking</td>
+</tr>
+<tr class="odd">
+<td align="left">SSexp</td>
+<td align="left">Sensation seeking scale, experience seeking</td>
+</tr>
+<tr class="even">
+<td align="left">SSdis</td>
+<td align="left">Sensation seeking scale, disinihibition</td>
+</tr>
+<tr class="odd">
+<td align="left">SSbor</td>
+<td align="left">Sensation seeking scale, boredom susceptibility</td>
+</tr>
+<tr class="even">
+<td align="left">SSSV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="left">Age</td>
+</tr>
+<tr class="even">
+<td align="left">sex</td>
+<td align="left">Sex</td>
+</tr>
+<tr class="odd">
+<td align="left">loc</td>
+<td align="left">Location</td>
+</tr>
+<tr class="even">
+<td align="left">ses</td>
+<td align="left">Socio-economic status</td>
+</tr>
+<tr class="odd">
+<td align="left">ses_moth</td>
+<td align="left">Socio-economic status, mother</td>
+</tr>
+<tr class="even">
+<td align="left">ses_fath</td>
+<td align="left">Socio-economic status, father</td>
+</tr>
+<tr class="odd">
+<td align="left">sibl</td>
+<td align="left">Number of siblings</td>
+</tr>
+<tr class="even">
+<td align="left">sibl_y</td>
+<td align="left">Number of siblings, younger</td>
+</tr>
+<tr class="odd">
+<td align="left">sibl_o</td>
+<td align="left">Number of siblings, older</td>
+</tr>
+<tr class="even">
+<td align="left">birthrank</td>
+<td align="left">Birthrank</td>
+</tr>
+<tr class="odd">
+<td align="left">edu</td>
+<td align="left">Education</td>
+</tr>
+<tr class="even">
+<td align="left">income</td>
+<td align="left">Income</td>
+</tr>
+<tr class="odd">
+<td align="left">NUM</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MUpc</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">OSpcL</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">SSpcL</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">SSTM</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">WMC</td>
+<td align="left">Working Memory Capacity</td>
+</tr>
+<tr class="odd">
+<td align="left">NEO_A</td>
+<td align="left">Big 5, Agreeableness</td>
+</tr>
+<tr class="even">
+<td align="left">NEO_C</td>
+<td align="left">Big 5, Conscientiousness</td>
+</tr>
+<tr class="odd">
+<td align="left">NEO_E</td>
+<td align="left">Big 5, Extraversion</td>
+</tr>
+<tr class="even">
+<td align="left">NEO_N</td>
+<td align="left">Big 5, Neuroticism</td>
+</tr>
+<tr class="odd">
+<td align="left">NEO_O</td>
+<td align="left">Big 5, Openness to experience</td>
+</tr>
+<tr class="even">
+<td align="left">STAI_trait</td>
+<td align="left">Stait-trait anxiety inventory, trait</td>
+</tr>
+<tr class="odd">
+<td align="left">gen_valence</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">gen_arousal</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">gen_arouspos</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">gen_arousneg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">gen_happy</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">gen_afraid</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">gen_sad</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">gen_angry</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">gen_motivat</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">gen_concentr</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">gen_timepr</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">gen_tired</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pre_valence</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">pre_arousal</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pre_arouspos</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">pre_arousneg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pre_happy</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">pre_afraid</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pre_sad</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">pre_angry</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pre_motivat</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">pre_concentr</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">pre_timepr</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">pre_tired</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid1_valence</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid1_arousal</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid1_arouspos</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid1_arousneg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid1_happy</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid1_afraid</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid1_sad</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid1_angry</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid1_motivat</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid1_concentr</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid1_timepr</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid1_tired</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid2_valence</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid2_arousal</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid2_arouspos</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid2_arousneg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid2_happy</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid2_afraid</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid2_sad</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid2_angry</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid2_motivat</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid2_concentr</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mid2_timepr</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">mid2_tired</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">post_valence</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">post_arousal</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">post_arouspos</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">post_arousneg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">post_happy</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">post_afraid</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">post_sad</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">post_angry</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">post_motivat</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">post_concentr</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">post_timepr</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">post_tired</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCTEU_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCTEU_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCTEU_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCTEU_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT4P_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT4P_PW</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT4P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT4P_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT4P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT4P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT6P_OSg</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT6P_OSl</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT6P_PWg</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT6P_PWl</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT6P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT6P_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCT6P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ABCT6P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ABCTRN_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPLEU_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPLEU_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPLEU_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPLEU_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL4P_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL4P_PW</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL4P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL4P_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL4P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL4P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL6P_OSg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL6P_OSl</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL6P_PWg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL6P_PWl</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL6P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL6P_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPL6P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MPL6P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">MPLRN_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCTEU_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCTEU_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCTEU_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCTEU_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT3P_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT3P_PW</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT3P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT3P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT3P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT4P_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT4P_PW</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT4P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT4P_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT4P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT4P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT6P_OSg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT6P_OSl</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT6P_PWg</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT6P_PWl</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT6P_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT6P_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCT6P_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCT6P_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCTRN_mp</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">CCTRN_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CCTRN_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BARTRN_pm</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BARTRN_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BARTRN_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART1_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BART1_alpha</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART1_mu</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BART1_LA</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART1_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BART1_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART1_BIC</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BART3_OS</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART3_alpha</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BART3_mu</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART3_CS</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BART3_DEV</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">BART3_BIC</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<div id="functions-1" class="section level4">
+<h4>Functions</h4>
+<table style="width:83%;">
+<colgroup>
+<col width="6%" />
+<col width="11%" />
+<col width="65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Package</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>trainControl()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Define modelling control parameters</td>
+</tr>
+<tr class="even">
+<td align="left"><code>train()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Train a model</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>predict(object, newdata)</code></td>
+<td align="left"><code>stats</code></td>
+<td align="left">Predict the criterion values of <code>newdata</code> based on <code>object</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>postResample()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Calculate aggregate model performance in regression tasks</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>confusionMatrix()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Calculate aggregate model performance in classification tasks</td>
+</tr>
+<tr class="even">
+<td align="left"><code>varImp()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Determine the model-specific importance of features</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>findCorrelation()</code>, <code>nearZeroVar()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Identify highly correlated and low variance features.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>rfe()</code>, <code>rfeControl()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Run and control recursive feature selection.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="packages" class="section level4">
+<h4>Packages</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Package</th>
+<th align="left">Installation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>tidyverse</code></td>
+<td align="left"><code>install.packages(&quot;tidyverse&quot;)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>caret</code></td>
+<td align="left"><code>install.packages(&quot;caret&quot;)</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="models" class="section level2">
+<h2>Models</h2>
+<iframe src="https://topepo.github.io/caret/available-models.html" style="width:100%;height:1200px">
+</iframe>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<pre class="r"><code># Step 0: Load packages-----------
+
+library(tidyverse)    # Load tidyverse for dplyr and tidyr
+library(caret)        # For ML mastery 
+
+# Step 1: Load, prepare, and explore data ----------------------
+
+# read data
+data &lt;- read_csv(&quot;URL_TO_BBRS_csv&quot;)
+
+# Convert all characters to factors
+data &lt;- data %&gt;%
+  mutate_if(is.character, factor)
+
+# Explore training data
+data        # Print the dataset
+dim(data)   # Print dimensions
+names(data) # Print the names
+
+# Step 2: Create training and test sets -------------
+
+# Create train index
+train_index &lt;- createDataPartition(criterion, 
+                                   p = .8, 
+                                   list = FALSE)
+
+# Create training and test sets
+data_train &lt;- data %&gt;% slice(train_index)
+data_test &lt;- data %&gt;% slice(-train_index)
+
+# split predictors and criterion
+criterion_train &lt;- data_train %&gt;% select(hwy) %&gt;% pull()
+predictors_train &lt;- data_train %&gt;% select(-hwy)
+criterion_test &lt;- data_test %&gt;% select(hwy) %&gt;% pull()
+predictors_test &lt;- data_test %&gt;% select(-hwy)
+
+# Step 3: Clean data -------------
+
+# Test for excessively correlated features
+corr_matrix &lt;- cor(predictors_train)
+corr_features &lt;- findCorrelation(corr_matrix)
+
+# Remove excessively correlated features
+predictors_train &lt;- predictors_train %&gt;% select(-corr_features)
+
+# Test for near zero variance features
+zerovar_features &lt;- nearZeroVar(predictors_train)
+
+# Remove near zero variance features
+predictors_train &lt;- predictors_train %&gt;% select(-zerovar_features)
+
+# recombine data
+data_train &lt;- predictors_train %&gt;% add_column(hwy = criterion_train)
+
+# Step 4: Define training control parameters -------------
+
+# Train using cross-validation
+ctrl_cv &lt;- trainControl(method = &quot;cv&quot;) 
+
+# Step 5: Fit models -------------
+
+# Fit glm vanilla flavor
+hwy_glm &lt;- train(form = hwy ~ .,
+                 data = data_train,
+                 method = &quot;glm&quot;,
+                 trControl = ctrl_cv)
+
+# Fit with pca transformation
+hwy_glm_pca &lt;- train(form = hwy ~ .,
+                     data = data_train,
+                     method = &quot;glm&quot;,
+                     trControl = ctrl_cv,
+                     preProcess = c(&#39;pca&#39;))
+
+# Fit scaling and centering
+hwy_glm_sca &lt;- train(form = hwy ~ .,
+                     data = data_train,
+                     method = &quot;glm&quot;,
+                     trControl = ctrl_cv,
+                     preProcess = c(&#39;scale&#39;, &#39;center&#39;))
+
+
+# Step 6: Evaluate variable importance -------------
+
+# Run varImp()
+imp_glm     &lt;- varImp(hwy_glm)
+imp_glm_pca &lt;- varImp(hwy_glm_pca)
+imp_glm_sca &lt;- varImp(hwy_glm_sca)
+
+# Plot variable importance
+plot(imp_glm)
+plot(imp_glm_pca)
+plot(imp_glm_sca)
+
+# Step 7: Select variables -------------
+
+# Select by hand in formula
+hwy_glm_sel &lt;- train(form = hwy ~ cty,
+                     data = data_train,
+                     method = &quot;glm&quot;,
+                     trControl = ctrl_cv)
+
+# Select by hand in data
+hwy_glm_sel &lt;- train(form = hwy ~ cty,
+                     data = data_train %&gt;% 
+                       select(-cyl, -displ, -year),
+                     method = &quot;glm&quot;,
+                     trControl = ctrl_cv)
+
+# Select by reducing pca criterion ---
+
+# Reduce criterion to 50% variance epxlained 
+ctrl_cv_pca &lt;- trainControl(method = &quot;cv&quot;,
+                            preProcOptions = list(thresh = 0.50)) 
+
+# Refit model with update
+hwy_glm_sel &lt;- train(form = hwy ~ cty,
+                     data = data_train %&gt;% 
+                       select(-cyl, -displ, -year),
+                     method = &quot;glm&quot;,
+                     trControl = ctrl_cv_pca,
+                     preProcess = c(&#39;pca&#39;))
+
+# Step 8: Recursive feature elimination -------------
+
+# Feature elimination settings 
+ctrl_rfe &lt;- rfeControl(functions = lmFuncs,  # linear model
+                       method = &quot;cv&quot;,
+                       verbose = FALSE)
+
+# Run feature elimination
+profile &lt;- rfe(x = predictors_train, 
+               y = criterion_train,
+               sizes = c(1, 2, 3),     # Features set sizes should be considered
+               rfeControl = ctrl_rfe)
+
+# plot result
+trellis.par.set(caretTheme())
+plot(profile, type = c(&quot;g&quot;, &quot;o&quot;))
+
+# Step 9: Evaluate models -------------
+
+# Save predicted values for test
+glm_pred     &lt;- predict(hwy_glm)
+glm_pca_pred &lt;- predict(hwy_glm_pca)
+glm_sca_pred &lt;- predict(hwy_glm_sca)
+
+#  Calculate fitting accuracies for test
+postResample(pred = glm_pred, obs = criterion_test)
+postResample(pred = glm_pca_pred, obs = criterion_test)
+postResample(pred = glm_sca_pred, obs = criterion_test)
+
+# Save predicted values for test
+glm_pred     &lt;- predict(hwy_glm, newdata = data_test)
+glm_pca_pred &lt;- predict(hwy_glm_pca, newdata = data_test)
+glm_sca_pred &lt;- predict(hwy_glm_sca, newdata = data_test)
+
+#  Calculate fitting accuracies for test
+postResample(pred = glm_pred, obs = criterion_test)
+postResample(pred = glm_pca_pred, obs = criterion_test)
+postResample(pred = glm_sca_pred, obs = criterion_test)</code></pre>
+</div>
+<div id="resources" class="section level2">
+<h2>Resources</h2>
+<div id="documentation" class="section level4">
+<h4>Documentation</h4>
+<ul>
+<li>The <code>caret</code> package webpage at <a href="https://topepo.github.io/caret/" class="uri">https://topepo.github.io/caret/</a> basically covers the contents of <a href="http://appliedpredictivemodeling.com/" class="uri">http://appliedpredictivemodeling.com/</a>.</li>
+</ul>
+</div>
+<div id="cheatsheet" class="section level4">
+<h4>Cheatsheet</h4>
+<p align="center" width="100%">
+<a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf"> <img src="image/caret.png" style="width:70%"></a> <br> <font style="font-size:10px">from <a href="https://www.rstudio.com/resources/cheatsheets/">R Studio</a></font>
+</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
