@@ -1,8 +1,7 @@
 ---
-title: "Risky, Sifty!"
+title: "Risky, Sifty! ...pt. 2"
 subtitle: ""
-author: "
-<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'><col width='10%'><col width='10%'>
+author: "<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'><col width='10%'><col width='10%'>
   <tr style='border:none'>
     <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
       CDS Hackathon
@@ -10,8 +9,7 @@ author: "
     <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
       <img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style='height:15px;width:80px'/>
     </td>
-  </tr>
-</table>"
+  </tr></table>"
 output:
   html_document:
     css: practical.css
@@ -42,11 +40,11 @@ options(digits = 3)
 
 *Washington, D.C., Anno 2054.*
 
-In an utopian, future world mankind has achieved a state of perfect orderliness. In this world, humans have become ideal decision makers, who always choose rationally in light of their preferences and the law. That is, almost all humans. A small resistance continues to disobey, by letting themselves be guided by situational greed and excitement, leading them to engage in ruthlessly risky behavior. To identify these troublemakers, the Secretary of Homeland Security funded a new task force headed by your friend, Tom Cruise.    
+In an utopian, future world mankind has achieved a state of perfect orderliness. In this world, humans have become ideal decision makers, who always choose rationally to satisfy both their preferences and the law. That is, almost all humans. A small resistance continues to disobey, by letting themselves be guided by situational greed and excitement, leading them to engage in ruthlessly risky behavior. To identify these troublemakers, the Secretary of Homeland Security funded a new task force headed by your friend, Tom Cruise.    
 
-Knowing himself little about machine learning, Tom Cruise approached you to help him predict risk taking based on a short psychological assessment known as the Basel-Berlin Risk Assessment. This less than 24h assessment has been introduced by the classic Basel-Berlin Risk Study ([**BBRS**](http://advances.sciencemag.org/content/advances/3/10/e1701381.full.pdf)) conducted almost 30 years ago by Renato Frey and colleagues. Your task is to use the BBRS's data to develop a model that predicts self-reported, yearly risk taking based on the 207 variables of this frugal measurement instrument.      
+Knowing himself little about regression analysis, Tom Cruise approached you to help him predict analyze risk taking based on the data of an recent meta-analysis ([**download**](lit/Wulff2018GapMeta.pdf)). Your task is to use the meta analysis' data to develop a model that predicts risky choices, based on the features available.      
 
-Specifically, your goal is to outperform Tom's other friends by finding a model that has the lowest mean absolute error (MAE) in order to prove to him that you are worthy of his friendship. Follow the instructions under the *Instructions* tab. 
+Specifically, your goal is to reveal hidden patterns by identifying which features predict risk taking and by creating visualizations that make these patterns abundantly clear. Follow the instructions under the *Instructions* tab. 
 
 The competition ends in...
 
@@ -54,7 +52,7 @@ The competition ends in...
 
 <script>
 // Set the date we're counting down to
-var countDownDate = new Date("May 2, 2019 19:15:00").getTime();
+var countDownDate = new Date("November 8, 2019 19:15:00").getTime();
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -95,46 +93,31 @@ var x = setInterval(function() {
 ## Modeling competition
 
 library(tidyverse)
-library(caret)
+library(lme4)
 ```
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
 library(tidyverse)
 ```
 
-2. Load the `bbrs` data set and change any character variables to factors.
+2. Load the `meta` data set and change any character variables to factors.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
 # Load bbrs data
-bbrs <- read_csv(file = "https://cdsbasel.github.io/hackathon_march/BBRS_train.csv")
-
-# change character to factor
-bbrs <- bbrs %>% mutate_if(is.character, as.factor)
+meta <- read_csv(file = "https://cdsbasel.github.io/hackathon_march/meta.csv")
 
 ```
-
-3. For guidance on how to go on see the code under the *Examples* tab.
 
 ### Competition rules
 
-1. The goal of the competition is to **predict `Dy`** (self-reported risk taking within a year) with **minimal `MAE`**.
+1. The goal of the competition is to **predict `risky_choice`** (whether a person chose the riskier of two options) using linear-mixed models.
 
 2. Entering the competition grants you a chance to win &#127870;&#127870;&#127870;.
 
-3. To enter the competition, you must submit no more, no less than one caret `train`-object (result of the `train()` function) containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_pseudonym_train.RDS`, with `yourname` replaced by your real name and `pseudonym` replaced by a pseudonym of your choice. See the code below.
+3. To enter the competition, you must prepare a short presentation of up to max 5 slides (including title and conclusion slide) containing the results . 
 
-```{r}
-# save train obect as .RDS
-saveRDS(my_train,'1_Data/myname_mypseudonym_train.RDS')
-```
-
-4. Submit your `.RDS` file (containing your training object) via this link:  [**Submit candidate**](https://www.dropbox.com/request/QapEfuzEL4JM9bR62hXZ).
-
-5. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models (see *Models* tab), use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `MAE`. For help take a look at the full [course materials](https://therbootcamp.github.io/appliedML_2019Jan/). 
-
-6. In order to be able to evaluate the models refrain from any manipulation (engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
-
+4. Use any weapon in your arsenal. Feel free to transform existing variables or to create new ones. Whatever leads to the most compelling analysis. 
 
 ## Dataset
 
@@ -142,7 +125,7 @@ saveRDS(my_train,'1_Data/myname_mypseudonym_train.RDS')
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[bbrs_train]("https://cdsbasel.github.io/hackathon_march/BBRS_train.csv")| 748 | 207 |
+|[meta]("https://cdsbasel.github.io/hackathon_nov/meta.csv")| 7685 | 21 |
 
 #### Variable descriptions
 
@@ -150,445 +133,25 @@ saveRDS(my_train,'1_Data/myname_mypseudonym_train.RDS')
 
 |Variable | Description |
 |:-------------|:-------------------------------------|
-|BART|  XXX in Balloon Analogue Risk Task|
-|BARTp| XXX in Balloon Analogue Risk Task|
-|BARTpadj| XXX in Balloon Analogue Risk Task|
-|CCT| XXX in Columbia Card Task|
-|CCTn|  XXX in Columbia Card Task|
-|CCTnadj|  XXX in Columbia Card Task|
-|CCTr|  XXX in Columbia Card Task|
-|CCTradj|  XXX in Columbia Card Task|
-|DFEss| Sample size in Decisions from Experience|
-|DFEr| XXX choices in Decisions from Experience|
-|DFEre| XXX choices in Decisions from Experience|
-|DFD| XXX choices in Decisions from Description|
-|DFDr| XXX choices in Decisions from Description|
-|LOT| XXX choices in adaptive lotteries|
-|LOTr| XXX choices in adaptive lotteries|
-|LOTcv| XXX choices in adaptive lotteries|
-|MPL| XXX in multiple price lists|
-|MPLr| XXX in multiple price lists|
-|MT| XXX choices in Marbles task|
-|MTr| XXX choices in Marbles task|
-|VRTTT| Reaction latency in Vienna Risk Taking Test Traffic|
-|GABS| Gambling Attitude and Belief Survey|
-|SOEP| SOEP general risk taking item|
-|SOEPdri| SOEP driving item|
-|SOEPfin| SOEP financial item|
-|SOEPrec| SOEP recreational item|
-|SOEPocc| SOEP occupational item|
-|SOEPhea| SOEP health item|
-|SOEPsoc| SOEP social item|
-|Deth| DOSPERT ethical scale, risk taking format |
-|Dinv| DOSPERT investment scale, risk taking format|
-|Dgam| DOSPERT gambling scale, risk taking format|
-|Dhea| DOSPERT health scale, risk taking format|
-|Drec| DOSPERT recreational scale, risk taking format|
-|Dsoc| DOSPERT social scale, risk taking format|
-|Deth_r| DOSPERT ethical scale, risk perception format|
-|Dinv_r| DOSPERT investment scale, risk perception format|
-|Dgam_r| DOSPERT gambling scale, risk perception format|
-|Dhea_r| DOSPERT health scale, risk perception format|
-|Drec_r| DOSPERT recreational scale, risk perception format|
-|Dsoc_r| DOSPERT social scale, risk perception format|
-|Deth_b| DOSPERT ethical scale, expected benefit format|
-|Dinv_b| DOSPERT investment scale, expected benefit format|
-|Dgam_b| DOSPERT gambling scale, expected benefit format|
-|Dhea_b| DOSPERT health scale, expected benefit format|
-|Drec_b| DOSPERT recreational scale, expected benefit format|
-|Dsoc_b| DOSPERT social scale, expected benefit format|
-|PRI| Personal risk inventory|
-|PRIw| XXX Personal risk inventory|
-|BIS1att| Barrat's impulsvivity scale, XXX scale |
-|BIS1mot| Barrat's impulsvivity scale, XXX scale |
-|BIS1ctr| Barrat's impulsvivity scale, XXX scale |
-|BIS1com| Barrat's impulsvivity scale, XXX scale |
-|BIS1per| Barrat's impulsvivity scale, XXX scale |
-|BIS1ins| Barrat's impulsvivity scale, XXX scale |
-|BISa| Barrat's impulsvivity scale, attentional scale |
-|BISm| Barrat's impulsvivity scale, motor scale |
-|BISn| Barrat's impulsvivity scale, nonplanning-behavior scale |
-|BIS| Barrat's impulsvivity scale, total score|
-|SStas| Sensation seeking scale, thrill and adventure seeking|
-|SSexp| Sensation seeking scale, experience seeking|
-|SSdis| Sensation seeking scale, disinihibition|
-|SSbor| Sensation seeking scale, boredom susceptibility|
-|SSSV| |
-|age| Age |
-|sex| Sex |
-|loc| Location |
-|ses| Socio-economic status |
-|ses_moth| Socio-economic status, mother |
-|ses_fath| Socio-economic status, father |
-|sibl| Number of siblings|
-|sibl_y| Number of siblings, younger |
-|sibl_o| Number of siblings, older |
-|birthrank| Birthrank|
-|edu| Education |
-|income| Income |
-|NUM| |
-|MUpc| |
-|OSpcL| |
-|SSpcL| |
-|SSTM| |
-|WMC| Working Memory Capacity |
-|NEO_A| Big 5, Agreeableness|
-|NEO_C| Big 5, Conscientiousness|
-|NEO_E| Big 5, Extraversion|
-|NEO_N| Big 5, Neuroticism|
-|NEO_O| Big 5, Openness to experience|
-|STAI_trait| Stait-trait anxiety inventory, trait|
-|gen_valence| |
-|gen_arousal| |
-|gen_arouspos| |
-|gen_arousneg| |
-|gen_happy| |
-|gen_afraid| |
-|gen_sad| |
-|gen_angry| |
-|gen_motivat| |
-|gen_concentr| |
-|gen_timepr| |
-|gen_tired| |
-|pre_valence| |
-|pre_arousal| |
-|pre_arouspos| |
-|pre_arousneg| |
-|pre_happy| |
-|pre_afraid| |
-|pre_sad| |
-|pre_angry| |
-|pre_motivat| |
-|pre_concentr| |
-|pre_timepr| |
-|pre_tired| |
-|mid1_valence| |
-|mid1_arousal| |
-|mid1_arouspos| |
-|mid1_arousneg| |
-|mid1_happy| |
-|mid1_afraid| |
-|mid1_sad| |
-|mid1_angry| |
-|mid1_motivat| |
-|mid1_concentr| |
-|mid1_timepr| |
-|mid1_tired| |
-|mid2_valence| |
-|mid2_arousal| |
-|mid2_arouspos| |
-|mid2_arousneg| |
-|mid2_happy| |
-|mid2_afraid| |
-|mid2_sad| |
-|mid2_angry| |
-|mid2_motivat| |
-|mid2_concentr| |
-|mid2_timepr| |
-|mid2_tired| |
-|post_valence| |
-|post_arousal| |
-|post_arouspos| |
-|post_arousneg| |
-|post_happy| |
-|post_afraid| |
-|post_sad| |
-|post_angry| |
-|post_motivat| |
-|post_concentr| |
-|post_timepr| |
-|post_tired| |
-|ABCTEU_OS| |
-|ABCTEU_CS| |
-|ABCTEU_DEV| |
-|ABCTEU_BIC| |
-|ABCT4P_OS| |
-|ABCT4P_PW| |
-|ABCT4P_LA| |
-|ABCT4P_CS| |
-|ABCT4P_DEV| |
-|ABCT4P_BIC| |
-|ABCT6P_OSg| |
-|ABCT6P_OSl| |
-|ABCT6P_PWg| |
-|ABCT6P_PWl| |
-|ABCT6P_LA| |
-|ABCT6P_CS| |
-|ABCT6P_DEV| |
-|ABCT6P_BIC| |
-|ABCTRN_DEV| |
-|MPLEU_OS| |
-|MPLEU_CS| |
-|MPLEU_DEV| |
-|MPLEU_BIC| |
-|MPL4P_OS| |
-|MPL4P_PW| |
-|MPL4P_LA| |
-|MPL4P_CS| |
-|MPL4P_DEV| |
-|MPL4P_BIC| |
-|MPL6P_OSg| |
-|MPL6P_OSl| |
-|MPL6P_PWg| |
-|MPL6P_PWl| |
-|MPL6P_LA| |
-|MPL6P_CS| |
-|MPL6P_DEV| |
-|MPL6P_BIC| |
-|MPLRN_DEV| |
-|CCTEU_OS| |
-|CCTEU_CS| |
-|CCTEU_DEV| |
-|CCTEU_BIC| |
-|CCT3P_OS| |
-|CCT3P_PW| |
-|CCT3P_LA| |
-|CCT3P_DEV| |
-|CCT3P_BIC| |
-|CCT4P_OS| |
-|CCT4P_PW| |
-|CCT4P_LA| |
-|CCT4P_CS| |
-|CCT4P_DEV| |
-|CCT4P_BIC| |
-|CCT6P_OSg| |
-|CCT6P_OSl| |
-|CCT6P_PWg| |
-|CCT6P_PWl| |
-|CCT6P_LA| |
-|CCT6P_CS| |
-|CCT6P_DEV| |
-|CCT6P_BIC| |
-|CCTRN_mp| |
-|CCTRN_DEV| |
-|CCTRN_BIC| |
-|BARTRN_pm| |
-|BARTRN_DEV| |
-|BARTRN_BIC| |
-|BART1_OS| |
-|BART1_alpha| |
-|BART1_mu| |
-|BART1_LA| |
-|BART1_CS| |
-|BART1_DEV| |
-|BART1_BIC| |
-|BART3_OS| |
-|BART3_alpha| |
-|BART3_mu| |
-|BART3_CS| |
-|BART3_DEV| |
-|BART3_BIC| |
-
-## Functions
-
-#### Functions
-
-| Function| Package | Description |
-|:---|:------|:---------------------------------------------|
-| `trainControl()`|`caret`|    Define modelling control parameters| 
-| `train()`|`caret`|    Train a model|
-| `predict(object, newdata)`|`stats`|    Predict the criterion values of `newdata` based on `object`|
-| `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
-| `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
-| `varImp()`|`caret`| Determine the model-specific importance of features |
-| `findCorrelation()`, `nearZeroVar()` |`caret`|  Identify highly correlated and low variance features. | 
-| `rfe()`, `rfeControl()` |`caret`|  Run and control recursive feature selection. | 
-
-#### Packages
-
-|Package| Installation | Load |
-|:------|:------|
-|`tidyverse`|`install.packages("tidyverse")`|`load("tidyverse")`|
-|`caret`|`install.packages("caret")`|`load("caret")`|
-
-
-## Models
-
-<iframe src="https://topepo.github.io/caret/available-models.html" style="width:100%;height:1200px"></iframe>
-
-
-## Examples
-
-```{r, eval = FALSE, echo = TRUE}
-
-# Step 0: Load packages-----------
-
-library(tidyverse)    # Load tidyverse for dplyr and tidyr
-library(caret)        # For ML mastery 
-
-# Step 1: Load, prepare, and explore data ----------------------
-
-# read data
-data <- read_csv("URL_TO_BBRS_csv")
-
-# Convert all characters to factors
-data <- data %>%
-  mutate_if(is.character, factor)
-
-# Explore training data
-data        # Print the dataset
-dim(data)   # Print dimensions
-names(data) # Print the names
-
-# Step 2: Create training and test sets -------------
-
-# Create train index
-train_index <- createDataPartition(criterion, 
-                                   p = .8, 
-                                   list = FALSE)
-
-# Create training and test sets
-data_train <- data %>% slice(train_index)
-data_test <- data %>% slice(-train_index)
-
-# split predictors and criterion
-criterion_train <- data_train %>% select(hwy) %>% pull()
-predictors_train <- data_train %>% select(-hwy)
-criterion_test <- data_test %>% select(hwy) %>% pull()
-predictors_test <- data_test %>% select(-hwy)
-
-# Step 3: Clean data -------------
-
-# Test for excessively correlated features
-corr_matrix <- cor(predictors_train)
-corr_features <- findCorrelation(corr_matrix)
-
-# Remove excessively correlated features
-predictors_train <- predictors_train %>% select(-corr_features)
-
-# Test for near zero variance features
-zerovar_features <- nearZeroVar(predictors_train)
-
-# Remove near zero variance features
-predictors_train <- predictors_train %>% select(-zerovar_features)
-
-# recombine data
-data_train <- predictors_train %>% add_column(hwy = criterion_train)
-
-# Step 4: Define training control parameters -------------
-
-# Train using cross-validation
-ctrl_cv <- trainControl(method = "cv") 
-
-# Step 5: Fit models -------------
-
-# Fit glm vanilla flavor
-hwy_glm <- train(form = hwy ~ .,
-                 data = data_train,
-                 method = "glm",
-                 trControl = ctrl_cv)
-
-# Fit with pca transformation
-hwy_glm_pca <- train(form = hwy ~ .,
-                     data = data_train,
-                     method = "glm",
-                     trControl = ctrl_cv,
-                     preProcess = c('pca'))
-
-# Fit scaling and centering
-hwy_glm_sca <- train(form = hwy ~ .,
-                     data = data_train,
-                     method = "glm",
-                     trControl = ctrl_cv,
-                     preProcess = c('scale', 'center'))
-
-
-# Step 6: Evaluate variable importance -------------
-
-# Run varImp()
-imp_glm     <- varImp(hwy_glm)
-imp_glm_pca <- varImp(hwy_glm_pca)
-imp_glm_sca <- varImp(hwy_glm_sca)
-
-# Plot variable importance
-plot(imp_glm)
-plot(imp_glm_pca)
-plot(imp_glm_sca)
-
-# Step 7: Select variables -------------
-
-# Select by hand in formula
-hwy_glm_sel <- train(form = hwy ~ cty,
-                     data = data_train,
-                     method = "glm",
-                     trControl = ctrl_cv)
-
-# Select by hand in data
-hwy_glm_sel <- train(form = hwy ~ cty,
-                     data = data_train %>% 
-                       select(-cyl, -displ, -year),
-                     method = "glm",
-                     trControl = ctrl_cv)
-
-# Select by reducing pca criterion ---
-
-# Reduce criterion to 50% variance epxlained 
-ctrl_cv_pca <- trainControl(method = "cv",
-                            preProcOptions = list(thresh = 0.50)) 
-
-# Refit model with update
-hwy_glm_sel <- train(form = hwy ~ cty,
-                     data = data_train %>% 
-                       select(-cyl, -displ, -year),
-                     method = "glm",
-                     trControl = ctrl_cv_pca,
-                     preProcess = c('pca'))
-
-# Step 8: Recursive feature elimination -------------
-
-# Feature elimination settings 
-ctrl_rfe <- rfeControl(functions = lmFuncs,  # linear model
-                       method = "cv",
-                       verbose = FALSE)
-
-# Run feature elimination
-profile <- rfe(x = predictors_train, 
-               y = criterion_train,
-               sizes = c(1, 2, 3),     # Features set sizes should be considered
-               rfeControl = ctrl_rfe)
-
-# plot result
-trellis.par.set(caretTheme())
-plot(profile, type = c("g", "o"))
-
-# Step 9: Evaluate models -------------
-
-# Save predicted values for test
-glm_pred     <- predict(hwy_glm)
-glm_pca_pred <- predict(hwy_glm_pca)
-glm_sca_pred <- predict(hwy_glm_sca)
-
-#  Calculate fitting accuracies for test
-postResample(pred = glm_pred, obs = criterion_test)
-postResample(pred = glm_pca_pred, obs = criterion_test)
-postResample(pred = glm_sca_pred, obs = criterion_test)
-
-# Save predicted values for test
-glm_pred     <- predict(hwy_glm, newdata = data_test)
-glm_pca_pred <- predict(hwy_glm_pca, newdata = data_test)
-glm_sca_pred <- predict(hwy_glm_sca, newdata = data_test)
-
-#  Calculate fitting accuracies for test
-postResample(pred = glm_pred, obs = criterion_test)
-postResample(pred = glm_pca_pred, obs = criterion_test)
-postResample(pred = glm_sca_pred, obs = criterion_test)
-
-
-```
-
-## Resources
-
-#### Documentation
-
-- The `caret` package webpage at [https://topepo.github.io/caret/](https://topepo.github.io/caret/) basically covers the contents of [http://appliedpredictivemodeling.com/](http://appliedpredictivemodeling.com/). 
-
-#### Cheatsheet
-
-<p align="center" width="100%">
-<a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf">
-  <img src="image/caret.png" style="width:70%"></a>
-  <br>
-  <font style="font-size:10px">from <a href="https://www.rstudio.com/resources/cheatsheets/">R Studio</a></font>
-</p>
-
+|study| study identifier |
+|subject| subject identifier |
+|problem| problem identifier |
+|risky_choice| risky choice (criterion) |
+|dom| domain of choice: loss, gain, or mixed |
+|cert| is the safe option certain |
+|ev_risky | expected value of risky option |
+|ev_safe | expected value of safe option |
+|ev_diff | difference in expected values |
+|cv_risky | coefficient of variation of risky option |
+|cv_safe | coefficient of variation of safe option |
+|cv_diff | difference in coefficient of variations |
+|first_author | first three letters of the study's first author |
+|out_risky_1 | first outcome of risky option |
+|out_risky_2 | second outcome of risky option |
+|prob_risky_1 | probability of first outcome of risky option |
+|prob_risky_2 | probability of second outcome of risky option |
+|out_safe_1 | first outcome of safe option |
+|out_safe_2 | second outcome of safe option|
+|prob_safe_1 | probability of first outcome of safe option |
+|prob_safe_2 | probability of second outcome of safe option |
 
