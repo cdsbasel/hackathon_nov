@@ -105,7 +105,7 @@ library(tidyverse)
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
 # Load bbrs data
-meta <- read_csv(file = "https://cdsbasel.github.io/hackathon_march/meta.csv")
+meta <- read_csv(file = "https://cdsbasel.github.io/hackathon_nov/meta.csv")
 
 ```
 
