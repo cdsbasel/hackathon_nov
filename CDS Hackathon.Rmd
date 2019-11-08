@@ -129,8 +129,6 @@ meta <- read_csv(file = "https://cdsbasel.github.io/hackathon_nov/meta.csv")
 
 #### Variable descriptions
 
-#### REMOVE OMMITTED VARS
-
 |Variable | Description |
 |:-------------|:-------------------------------------|
 |study| study identifier |
